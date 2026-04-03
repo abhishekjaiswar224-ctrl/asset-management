@@ -1,0 +1,22 @@
+{
+  "name": "asset-management-system",
+  "version": "1.0.0",
+  "description": "Asset management system for tracking employee assets",
+  "scripts": {
+    "install-all": "npm install && cd client && npm install && cd ../server && npm install",
+    "build": "cd client && npm run build && rm -rf ../server/public && mv dist ../server/public",
+    "start": "cd server && npm start",
+    "dev": "concurrently \"cd server && npm run dev\" \"cd client && npm run dev\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "keywords": [
+    "asset",
+    "management",
+    "employee",
+    "tracking"
+  ],
+  "author": "",
+  "license": "ISC"
+}
