@@ -1,4 +1,4 @@
-# 🏢 Asset Management System
+# 🏢 Asset Management System1
 
 A modern, full-stack web application designed to streamline the tracking, assignment, and management of company assets. Built with a React frontend and a Node.js/Express backend, this system is production-ready and optimized for deployment on AWS (EC2 & RDS).
 
@@ -16,6 +16,7 @@ A modern, full-stack web application designed to streamline the tracking, assign
 ## 🛠️ Tech Stack
 
 **Frontend (Client):**
+
 - React (Vite)
 - Tailwind CSS
 - Zustand (State Management)
@@ -25,6 +26,7 @@ A modern, full-stack web application designed to streamline the tracking, assign
 - SheetJS / XLSX (Data Export/Import)
 
 **Backend (Server):**
+
 - Node.js & Express.js
 - MySQL2 (Connection Pooling)
 - JSON Web Tokens (JWT)
@@ -33,6 +35,7 @@ A modern, full-stack web application designed to streamline the tracking, assign
 - Helmet, Compression, Express-Rate-Limit
 
 **Infrastructure:**
+
 - AWS EC2 (Application Hosting)
 - AWS RDS (MySQL Database)
 
@@ -41,14 +44,17 @@ A modern, full-stack web application designed to streamline the tracking, assign
 ## 🚀 Local Setup & Installation
 
 ### Prerequisites
+
 - Node.js (v20 or higher)
 - MySQL Server (Local or AWS RDS)
 
 ### 1. Database Setup
+
 1. Create a new MySQL database.
 2. Execute the required SQL script to generate the `users`, `employees`, and `AssetManagement` tables.
 
 ### 2. Environment Configuration
+
 Navigate to the `server` directory and create a `.env` file based on the provided example:
 
 ```bash
@@ -57,6 +63,7 @@ cp .env.example .env
 ```
 
 Update the `server/.env` file with your actual database and email credentials:
+
 ```env
 PORT=3000
 DB_HOST=localhost # Or your AWS RDS Endpoint
@@ -77,6 +84,7 @@ EMAIL_FROM=your_email@gmail.com
 ```
 
 ### 3. Build and Run (Development)
+
 The project uses a unified monorepo structure. From the root directory, run:
 
 ```bash
@@ -94,11 +102,14 @@ npm run dev
 Follow these steps to deploy the application on an AWS EC2 instance using PM2 and NGINX.
 
 ### 1. Provision Infrastructure
+
 1. **RDS:** Create an AWS RDS MySQL instance. Ensure the Security Group allows inbound traffic on port `3306` from your EC2 instance.
 2. **EC2:** Launch an Ubuntu 22.04/24.04 EC2 instance. Open ports `80` (HTTP), `443` (HTTPS), and `22` (SSH) in its Security Group.
 
 ### 2. Install Node.js (v20) & Git on EC2
+
 SSH into your EC2 instance and run:
+
 ```bash
 sudo apt update
 sudo apt install -y curl git
@@ -107,6 +118,7 @@ sudo apt install -y nodejs
 ```
 
 ### 3. Clone & Configure
+
 ```bash
 git clone <your-repository-url> asset-management
 cd asset-management
@@ -119,14 +131,18 @@ cd ..
 ```
 
 ### 4. Build the Project
+
 Run the unified build command from the root directory. This installs all dependencies, builds the React frontend, and moves the optimized static files to `server/public`.
+
 ```bash
 npm run install-all
 npm run build
 ```
 
 ### 5. Setup PM2 (Process Manager)
+
 PM2 ensures your Node.js application stays alive forever and restarts automatically if the server reboots.
+
 ```bash
 sudo npm install -g pm2
 
@@ -141,12 +157,16 @@ pm2 save
 ```
 
 ### 6. Optional: Setup NGINX Reverse Proxy
+
 To serve your application on port 80 and easily add SSL later, use NGINX.
+
 ```bash
 sudo apt install -y nginx
 sudo nano /etc/nginx/sites-available/default
 ```
+
 Replace the contents with:
+
 ```nginx
 server {
     listen 80;
@@ -162,7 +182,9 @@ server {
     }
 }
 ```
+
 Restart NGINX:
+
 ```bash
 sudo nginx -t
 sudo systemctl restart nginx
@@ -173,6 +195,7 @@ Your application is now live and production-ready!
 ---
 
 ## 🔒 Security & Performance Best Practices Implemented
+
 - **Helmet.js:** Secures Express apps by setting various HTTP headers.
 - **Express Rate Limit:** Protects APIs against brute-force and DDoS attacks.
 - **Compression:** Gzip compression reduces the size of the response body and increases the speed of the web app.
