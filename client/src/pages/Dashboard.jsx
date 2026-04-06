@@ -7,6 +7,7 @@ import MyInformation from '../components/MyInformation';
 import EditEmployeeForm from '../components/EditEmployeeForm';
 import ViewEmployee from '../components/ViewEmployee';
 import EditEmployee from '../components/EditEmployee';
+import UploadHistory from './UploadHistory';
 import { useAuthstore } from '../utils/authStore';
 import { useEmployeeRecord } from '../hooks/useEmployeeRecord';
 
@@ -68,6 +69,7 @@ const Dashboard = () => {
               {activeTab === 'table' && <EmployeeTable />}
               {activeTab === 'myInfo' && <MyInformation />}
               {activeTab === 'editInfo' && <EditEmployeeForm />}
+              {activeTab === 'uploads' && <UploadHistory />}
             </>
           } />
         </Routes>

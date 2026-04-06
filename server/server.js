@@ -6,12 +6,12 @@ import compression from "compression";
 import rateLimit from "express-rate-limit";
 import empRouter from "./routes/emp.js";
 import authRouter from "./routes/auth.js";
+import fileRouter from "./routes/files.js";
 import pool from "./db.js";
 import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
-
-//my name is abhishek
+import { logger } from "./utils/logger.js";
 
 // Get __dirname equivalent in ES module
 const __filename = fileURLToPath(import.meta.url);
@@ -22,12 +22,19 @@ dotenv.config();
 
 // Check for critical environment variables
 if (!process.env.JWT_SECRET_KEY) {
+  logger.error("ERROR: JWT_SECRET_KEY environment variable is not set!");
   console.error("ERROR: JWT_SECRET_KEY environment variable is not set!");
   process.exit(1); // Exit the application if the critical env var is missing
 }
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+// Request logging middleware
+app.use((req, res, next) => {
+  logger.info(`Incoming request: ${req.method} ${req.url}`, { ip: req.ip });
+  next();
+});
 
 // Security Middlewares
 app.use(
@@ -76,10 +83,10 @@ app.use("/api", apiLimiter);
 app.get("/api/health", async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT 1 + 1 AS solution");
-    console.log("Database connection successful!");
+    logger.info("Database connection successful!");
     res.json({ solution: rows[0].solution });
   } catch (err) {
-    console.error("Database connection failed:", err.message);
+    logger.error("Database connection failed", { error: err.message });
     res.status(500).json({ error: err.message });
   }
 });
@@ -88,6 +95,8 @@ app.get("/api/health", async (req, res) => {
 app.use("/api/employees", empRouter);
 // Use authentication routes
 app.use("/api/auth", authRouter);
+// Use file routes
+app.use("/api/files", fileRouter);
 
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, "public")));
@@ -100,10 +109,18 @@ app.all("*", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "index.html"));
   } else {
     // This will now properly handle any unmatched API routes with any HTTP method
+    logger.error(`API endpoint not found: ${req.method} ${req.url}`);
     res.status(404).json({ message: "API endpoint not found" });
   }
 });
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+  logger.error("Unhandled error", { error: err.message, stack: err.stack });
+  res.status(500).json({ message: "Internal server error" });
+});
+
 app.listen(port, "0.0.0.0", () => {
+  logger.info(`Server running on http://0.0.0.0:${port}`);
   console.log(`Server running on http://0.0.0.0:${port}`);
 });

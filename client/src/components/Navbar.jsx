@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { PlusCircle, Users, User, Edit, LogOut, Shield, UserCheck } from "lucide-react";
+import { PlusCircle, Users, User, Edit, LogOut, Shield, UserCheck, UploadCloud } from "lucide-react";
 import { useAuthstore } from '../utils/authStore';
 import { useEmployeeRecord } from '../hooks/useEmployeeRecord';
 
@@ -29,6 +29,7 @@ const Navbar = ({ activeTab, onTabChange }) => {
       return [
         { id: 'form', label: 'Add Employee', icon: <PlusCircle size={18} /> },
         { id: 'table', label: 'Employee List', icon: <Users size={18} /> },
+        { id: 'uploads', label: 'Assets Data', icon: <UploadCloud size={18} /> },
       ];
     } 
     // Employee without a record
@@ -42,6 +43,7 @@ const Navbar = ({ activeTab, onTabChange }) => {
       return [
         { id: 'myInfo', label: 'My Information', icon: <User size={18} /> },
         { id: 'editInfo', label: 'Edit Information', icon: <Edit size={18} /> },
+        { id: 'uploads', label: 'Assets Data', icon: <UploadCloud size={18} /> },
       ];
     }
   };
